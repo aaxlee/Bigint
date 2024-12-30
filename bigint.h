@@ -6,7 +6,7 @@
 typedef struct bigint_t {
         int number[_BIG_INT_MAX_LENGTH];
         int sign;
-        size_t length;
+        int length;
 } bigint_t;
 
 bigint_t bigint_create(char *num);
