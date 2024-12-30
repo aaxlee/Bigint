@@ -10,11 +10,12 @@ typedef struct bigint_t {
 } bigint_t;
 
 bigint_t bigint_create(char *num);
+// TODO: uh rename
 bigint_t bigint_itbi(int num);
 void bigint_print(bigint_t num);
 void bigint_format_print(bigint_t num);
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
-// TODO: optimize algorithm
+// TODO: redo this
 bigint_t bigint_factorial(int num);
 
 // modulo implementation: https://www.youtube.com/watch?v=2kUP9HcJwD4
@@ -68,7 +69,7 @@ void bigint_print(bigint_t num)
         if (num.sign == -1) {
                 printf("-");
         }
-        for (size_t i = 0; i < num.length; i++) {
+        for (int i = 0; i < num.length; i++) {
                 printf("%d", num.number[i]);
         }
         printf("\n");
