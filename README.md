@@ -1,5 +1,5 @@
 # Big_Integer
-A big integer struct in c to support numbers larger than 2^64
+big integer struct in c
 
 
 
@@ -11,7 +11,7 @@ A big integer struct in c to support numbers larger than 2^64
 
 example usage:
 
-WARNING: there is NO error handling in this function, if the minus sign is anywhere other than index 0, it will not be accounted for:
+WARNING: there is NO error handling / checks if the input string is a "valid" number in the bigint_create() function
 
 
 
