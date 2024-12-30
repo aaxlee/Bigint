@@ -18,7 +18,7 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
 // TODO: redo this
 bigint_t bigint_factorial(int num);
 
-// modulo implementation: https://www.youtube.com/watch?v=2kUP9HcJwD4
+// TODO: watch this video https://www.youtube.com/watch?v=2kUP9HcJwD4
 
 // creates a bigint_t using a string
 bigint_t bigint_create(char *num)
@@ -44,11 +44,14 @@ bigint_t bigint_create(char *num)
 // converts an int to a bigint_t, (itbi = int to bigint)
 bigint_t bigint_itbi(int num)
 {
-        bigint_t result = { {0}, 1, 0 };
+        bigint_t result = { {0}, (num > 0) ? 1 : -1, 0 };
+        if (num < 0) {
+                num *= -1;
+        }
         
         int num_len = 0;
         int n = num;
-        while (n > 0) {
+        while (n != 0) {
                 n /= 10;
                 num_len++;
         }
@@ -87,6 +90,10 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
         bigint_t result = { {0}, 1, 0 };
         result.length = num1.length + num2.length;
         result.sign = num1.sign * num2.sign;
+
+        if (result.length > _BIG_INT_MAX_LENGTH) {
+                return result;
+        }
 
         int start = result.length - 1;
         int num1_iterations = 0;
