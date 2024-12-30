@@ -1,13 +1,15 @@
 # Big_Integer
-A big integer struct in c to support numbers larger than 2^64
+A big integer struct in c to support numbers larger than 2^64\n
+
+
+
+
+
+
+
+
 
 example usage:
-
-
-
-
-
-
 
 WARNING: there is NO error handling in this function, if the minus sign is anywhere other than index 0, it will not be accounted for
 bigint_t n = bigint_create("193201293005903902300923");
