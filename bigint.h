@@ -1,9 +1,10 @@
 #ifndef BIGINT_H
 #define BIGINT_H
 
-#define _BIG_INT_MAX_LENGTH 500
-
+#include <stdio.h>
 #include <stdarg.h>
+
+#define _BIG_INT_MAX_LENGTH 500
 
 typedef struct bigint_t {
         int number[_BIG_INT_MAX_LENGTH];
@@ -11,19 +12,23 @@ typedef struct bigint_t {
         int length;
 } bigint_t;
 
+/* INITIALIZATION FUNCTIONS */
 bigint_t bigint_create(char *num);
 // TODO: uh rename
 bigint_t bigint_itbi(int num);
+/****************************/
+
+/* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
 void bigint_exponent_print(bigint_t num);
-void bigint_format_print(char *format, ...);
+void bigint_printf(char *format, ...);
+/**********************/
+
+/* OPERATION FUNCTIONS */
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
-// TODO: redo this
 bigint_t bigint_factorial(int num);
+/***********************/
 
-// TODO: watch this video https://www.youtube.com/watch?v=2kUP9HcJwD4
-
-// creates a bigint_t using a string
 bigint_t bigint_create(char *num)
 {
         bigint_t n = { {0}, 1, 0 };
@@ -97,7 +102,7 @@ void bigint_exponent_print(bigint_t num)
 
 }
 
-void bigint_format_print(char *format, ...)
+void bigint_printf(char *format, ...)
 {
         va_list args;
         char *f_ptr = format;
@@ -109,6 +114,12 @@ void bigint_format_print(char *format, ...)
                         f_ptr += 2;
                         bigint_t n = va_arg(args, bigint_t);
                         bigint_exponent_print(n);
+                        continue;
+                }
+                else if (*f_ptr == '%' && *(f_ptr + 1) == 'N') {
+                        f_ptr += 2;
+                        bigint_t n = va_arg(args, bigint_t);
+                        bigint_print(n);
                         continue;
                 }
 
