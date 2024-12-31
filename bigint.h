@@ -14,13 +14,21 @@ typedef struct bigint_t {
 
 /* INITIALIZATION FUNCTIONS */
 bigint_t bigint_create(char *num);
+/****************************/
+
+/* CONVERSION FUNCTIONS */
 // TODO: uh rename
 bigint_t bigint_itbi(int num);
-/****************************/
+/************************/
 
 /* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
 void bigint_exponent_print(bigint_t num);
+
+// bigint_printf() works like printf()
+// NOTE: the arguments must be bigint_t
+// %E => exponent form                  ex. 5.3E4
+// %N => decimal/standard form          ex. 5300
 void bigint_printf(char *format, ...);
 /**********************/
 
