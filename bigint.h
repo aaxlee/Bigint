@@ -3,6 +3,8 @@
 
 #define _BIG_INT_MAX_LENGTH 500
 
+#include <stdarg.h>
+
 typedef struct bigint_t {
         int number[_BIG_INT_MAX_LENGTH];
         int sign;
@@ -13,7 +15,8 @@ bigint_t bigint_create(char *num);
 // TODO: uh rename
 bigint_t bigint_itbi(int num);
 void bigint_print(bigint_t num);
-void bigint_format_print(bigint_t num);
+void bigint_exponent_print(bigint_t num);
+void bigint_format_print(char *format, ...);
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
 // TODO: redo this
 bigint_t bigint_factorial(int num);
@@ -78,10 +81,43 @@ void bigint_print(bigint_t num)
         printf("\n");
 }
 
-
-void bigint_format_print(bigint_t num)
+void bigint_exponent_print(bigint_t num)
 {
 
+        if (num.sign == -1) {
+                printf("-");
+        }
+
+        printf("%d.", num.number[0]);
+        int exponent = num.length - 1;
+        for (int i = 1; i < num.length; i++) {
+                printf("%d", num.number[i]);
+        }
+        printf("E%d", exponent);
+
+}
+
+void bigint_format_print(char *format, ...)
+{
+        va_list args;
+        char *f_ptr = format;
+        va_start(args, format);
+
+        while (*f_ptr != '\0') {
+
+                if (*f_ptr == '%' && *(f_ptr + 1) == 'E') {
+                        f_ptr += 2;
+                        bigint_t n = va_arg(args, bigint_t);
+                        bigint_exponent_print(n);
+                        continue;
+                }
+
+                printf("%c", *f_ptr);
+
+                f_ptr++;
+        }
+
+        va_end(args);
 }
 
 // multiply two bigint_t numbers using long multiplication
