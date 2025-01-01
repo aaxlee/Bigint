@@ -1,5 +1,5 @@
-# Big_Integer
-big integer struct in c
+# Bigint
+big integer implementation in c
 
 
 
