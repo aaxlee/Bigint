@@ -1,19 +1,13 @@
 # Bigint
 big integer implementation in c
 
-
-
-
-
-
+stores each digit of a long number in an array where the first digit of the number is at index 0 in the array
 
 
 
 example usage:
 
-WARNING: there is NO error handling / checks if the input string is a "valid" number in the bigint_create() function
-
-
+WARNING: there is NO error handling
 
 bigint_t n = bigint_create("193201293005903902300923");
 
