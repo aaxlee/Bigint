@@ -7,7 +7,7 @@
 #define _BIG_INT_MAX_LENGTH 500
 
 typedef struct bigint_t {
-        int number[_BIG_INT_MAX_LENGTH];
+        int data[_BIG_INT_MAX_LENGTH];
         int sign;
         int length;
 } bigint_t;
@@ -48,7 +48,7 @@ bigint_t bigint_create(char *num)
 
         int index = 0;
         while (*num != '\0') {
-                n.number[index] = *num - '0';
+                n.data[index] = *num - '0';
                 num++;
                 index++;
         }
@@ -76,7 +76,7 @@ bigint_t bigint_itbi(int num)
 
         for (int i = num_len - 1; i >= 0; i--) {
                 int digit = num % 10;
-                result.number[i] = digit;
+                result.data[i] = digit;
                 num /= 10;
         }
 
@@ -89,7 +89,7 @@ void bigint_print(bigint_t num)
                 printf("-");
         }
         for (int i = 0; i < num.length; i++) {
-                printf("%d", num.number[i]);
+                printf("%d", num.data[i]);
         }
         printf("\n");
 }
@@ -101,10 +101,10 @@ void bigint_exponent_print(bigint_t num)
                 printf("-");
         }
 
-        printf("%d.", num.number[0]);
+        printf("%d.", num.data[0]);
         int exponent = num.length - 1;
         for (int i = 1; i < num.length; i++) {
-                printf("%d", num.number[i]);
+                printf("%d", num.data[i]);
         }
         printf("E%d", exponent);
 
@@ -156,16 +156,16 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
 
         for (int i = num2.length - 1; i >= 0; i--) {
 
-                int n2 = num2.number[i];
+                int n2 = num2.data[i];
                 int carry = 0;
 
                 for (int j = num1.length - 1; j >= 0; j--) {
 
-                        int n1 = num1.number[j];
+                        int n1 = num1.data[j];
                         int prod = n1 * n2;
-                        int sum = result.number[start - offset] + prod + carry;
+                        int sum = result.data[start - offset] + prod + carry;
 
-                        result.number[start - offset] = sum % 10;
+                        result.data[start - offset] = sum % 10;
 
                         carry = sum / 10;
 
@@ -177,15 +177,15 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
                 offset = num1_iterations;
 
                 if (carry > 0) {
-                        result.number[i] += carry;
+                        result.data[i] += carry;
                 }
 
         }
 
-        if (result.number[0] == 0) {
+        if (result.data[0] == 0) {
                 bigint_t adjusted_result = { {0}, result.sign, result.length - 1 };
                 for (int i = 1; i < result.length; i++) {
-                        adjusted_result.number[i - 1] = result.number[i];
+                        adjusted_result.data[i - 1] = result.data[i];
                 }
                 return adjusted_result;
         }
