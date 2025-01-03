@@ -1,5 +1,4 @@
 # Bigint
-big integer implementation in c
 
 stores each digit of a long number in an array where the first digit of the number is at index 0 in the array
 
