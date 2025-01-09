@@ -16,9 +16,22 @@ typedef struct bigint_t {
 bigint_t bigint_create(char *num);
 /****************************/
 
-/* CONVERSION FUNCTIONS */
+/* OPERATION FUNCTIONS */
+bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
+bigint_t bigint_factorial(int num);
+bigint_t bigint_permutations(int n, int r);
+bigint_t bigint_combinations(int n, int r);
+
+// only works with single digit divisor
+bigint_t bigint_divide_simple(bigint_t num1, int num2);
+/***********************/
+
+/* UTILITY */
 // TODO: uh rename
 bigint_t bigint_itbi(int num);
+
+// removes zeroes before any other digit
+bigint_t bigint_adjust(bigint_t num);
 /************************/
 
 /* PRINTING FUNCTIONS */
@@ -32,10 +45,7 @@ void bigint_exponent_print(bigint_t num);
 void bigint_printf(char *format, ...);
 /**********************/
 
-/* OPERATION FUNCTIONS */
-bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
-bigint_t bigint_factorial(int num);
-/***********************/
+/*______________________________________________________*/
 
 bigint_t bigint_create(char *num)
 {
@@ -78,6 +88,28 @@ bigint_t bigint_itbi(int num)
                 int digit = num % 10;
                 result.data[i] = digit;
                 num /= 10;
+        }
+
+        return result;
+}
+
+bigint_t bigint_adjust(bigint_t num)
+{
+        int zeroes = 0;
+        int i = 0;
+        while (i < num.length) {
+                if (num.data[i] == 0) {
+                        zeroes++;
+                } else {
+                        break;
+                }
+                i++;
+        }
+
+        bigint_t result = { {0}, num.sign, num.length - zeroes };
+
+        for (int i = zeroes; i < num.length; i++) {
+                result.data[i - zeroes] = num.data[i];
         }
 
         return result;
@@ -183,11 +215,29 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
         }
 
         if (result.data[0] == 0) {
-                bigint_t adjusted_result = { {0}, result.sign, result.length - 1 };
-                for (int i = 1; i < result.length; i++) {
-                        adjusted_result.data[i - 1] = result.data[i];
-                }
-                return adjusted_result;
+                result = bigint_adjust(result);
+        }
+
+        return result;
+}
+
+bigint_t bigint_divide_simple(bigint_t num1, int num2)
+{
+        bigint_t result = { {0}, 1, 0 };
+        result.length = num1.length;
+        result.sign = num1.sign * ( (num2 > 0) ? 1 : -1 );
+
+        int remainder = 0;
+        for (int i = 0; i < num1.length; i++) {
+                int n1 = num1.data[i];
+                int sum = remainder * 10 + n1;
+                int m = sum / num2;
+                result.data[i] = m;
+                remainder = sum - (m * num2);
+        }
+
+        if (result.data[0] == 0) {
+                result = bigint_adjust(result);
         }
 
         return result;
@@ -200,6 +250,32 @@ bigint_t bigint_factorial(int num)
         for (int i = num - 1; i >= 2; i--) {
                 bigint_t n = bigint_itbi(i);
                 result = bigint_multiply(result, n);
+        }
+
+        return result;
+}
+
+bigint_t bigint_permutations(int n, int r)
+{
+        bigint_t result = bigint_itbi(n);
+
+        for (int i = n - 1; i > n - r; i--) {
+                bigint_t coeff = bigint_itbi(i);
+                result = bigint_multiply(result, coeff);
+        }
+
+        return result;
+}
+
+bigint_t bigint_combinations(int n, int r)
+{
+        bigint_t result = bigint_create("1");
+
+        int i2 = 1;
+        for (int i = n; i > n - r; i--) {
+                bigint_t prod = bigint_multiply(result, bigint_itbi(i));
+                result = bigint_divide_simple(prod, i2);
+                i2++;
         }
 
         return result;
