@@ -6,7 +6,7 @@ if you are using c11 you can use the following macro to typecast strings and int
 
 bigint_t(11) / bigint_t("11")
 
-
+***************************************
 example usage of some useful functions:
 
 WARNING: there is little to no error handling, use at your own risk
