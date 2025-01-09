@@ -12,6 +12,7 @@ typedef struct bigint_t {
         int length;
 } bigint_t;
 
+// C11-specific macro for bigint_t initialization
 #ifdef __STDC_VERSION__
         #if __STDC_VERSION__ >= 201112L
                 #define bigint_t(value) _Generic((value), \
@@ -22,6 +23,8 @@ typedef struct bigint_t {
 
 /* INITIALIZATION FUNCTIONS */
 bigint_t bigint_create(char *num);
+// TODO: uh rename
+bigint_t bigint_itbi(int num);
 /****************************/
 
 /* OPERATION FUNCTIONS */
@@ -35,10 +38,7 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2);
 /***********************/
 
 /* UTILITY */
-// TODO: uh rename
-bigint_t bigint_itbi(int num);
-
-// removes zeroes before any other digit
+// cleans up zeroes. example => 000123 becomes 123
 bigint_t bigint_adjust(bigint_t num);
 /************************/
 
