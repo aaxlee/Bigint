@@ -6,9 +6,10 @@ if you are using c11 you can use the following macro to typecast strings and int
 
 bigint_t(11) / bigint_t("11")
 
-example usage:
 
-WARNING: there is NO error handling
+example usage of some useful functions:
+
+WARNING: there is little to no error handling, use at your own risk
 
 bigint_t n = bigint_create("193201293005903902300923");
 
