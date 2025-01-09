@@ -12,6 +12,14 @@ typedef struct bigint_t {
         int length;
 } bigint_t;
 
+#ifdef __STDC_VERSION__
+        #if __STDC_VERSION__ >= 201112L
+                #define bigint_t(value) _Generic((value), \
+                        char *: bigint_create, \
+                        int: bigint_itbi)(value)
+        #endif
+#endif
+
 /* INITIALIZATION FUNCTIONS */
 bigint_t bigint_create(char *num);
 /****************************/
@@ -281,4 +289,4 @@ bigint_t bigint_combinations(int n, int r)
         return result;
 }
 
-#endif /* BIGINT_H */ 
+#endif /* BIGINT_H */
