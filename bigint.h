@@ -12,7 +12,7 @@ typedef struct bigint_t {
         int length;
 } bigint_t;
 
-// C11-specific macro to initialize a bigint_t
+// C11-specific macro for bigint_t initialization
 #ifdef __STDC_VERSION__
         #if __STDC_VERSION__ >= 201112L
                 #define bigint_t(value) _Generic((value), \
@@ -45,6 +45,7 @@ bigint_t bigint_adjust(bigint_t num);
 /* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
 void bigint_print_exponent(bigint_t num);
+void bigint_print_separate(bigint_t num, char separator);
 
 // bigint_printf() works like printf()
 // NOTE: the arguments must be bigint_t
@@ -150,6 +151,35 @@ void bigint_print_exponent(bigint_t num)
 
 }
 
+void bigint_print_separate(bigint_t num, char separator)
+{
+        int counter = 1;
+        int offset;
+        if ( (num.length - 1) % 3 == 0) {
+                offset = 0;
+        }
+        if ( (num.length - 1) % 3 > 0) {
+                offset = (num.length - 1) % 3;
+        }
+        if (num.length - 1 < 3) {
+                offset = num.length;
+                counter = 4;
+        }
+        for (int i = 0; i < num.length; i++) {
+                printf("%d", num.data[i]);
+                if (i == offset) {
+                        printf("%c", separator);
+                        counter = 0;
+                        offset = 0;
+                }
+                if (counter == 3 && offset == 0 && i + 3 < num.length) {
+                        printf("%c", separator);
+                        counter = 0;
+                }
+                counter++;
+        }
+}
+
 void bigint_printf(char *format, ...)
 {
         va_list args;
@@ -163,11 +193,30 @@ void bigint_printf(char *format, ...)
                         bigint_t n = va_arg(args, bigint_t);
                         bigint_print_exponent(n);
                         continue;
-                }
-                else if (*f_ptr == '%' && *(f_ptr + 1) == 'N') {
+                } else if (*f_ptr == '%' && *(f_ptr + 1) == 'N') {
                         f_ptr += 2;
                         bigint_t n = va_arg(args, bigint_t);
                         bigint_print(n);
+                        continue;
+                } else if (*f_ptr == '%' && *(f_ptr + 1) == 'S' ||
+                                *f_ptr == '%' && *(f_ptr + 1) != ' '
+                                && *(f_ptr + 2) == 'S') {
+                        bigint_t n = va_arg(args, bigint_t);
+                        char separator;
+
+                        // separator becomes the character before 'S',
+                        // if the character before 'S' is '%' separator becomes ','
+                        int incrament;
+                        if (*(f_ptr + 1) == 'S') {
+                                separator = ',';
+                                incrament = 2;
+                        } else {
+                                separator = *(f_ptr + 1);
+                                incrament = 3;
+                        }
+
+                        bigint_print_separate(n, separator);
+                        f_ptr += incrament;
                         continue;
                 }
 
