@@ -51,6 +51,8 @@ void bigint_print_separate(bigint_t num, char separator);
 // NOTE: the arguments must be bigint_t
 // %E => exponent form                  ex. 5.3E4
 // %N => standard notation              ex. 5300
+// %S => separated form
+//      %S => 5,300, %.S => 5.300, %_S => 5_300 ... etc
 void bigint_printf(char *format, ...);
 /**********************/
 
