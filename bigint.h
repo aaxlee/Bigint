@@ -40,7 +40,7 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2);
 /* UTILITY */
 // cleans up zeroes. example => 000123 becomes 123
 bigint_t bigint_adjust(bigint_t num);
-/************************/
+/***********/
 
 /* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
