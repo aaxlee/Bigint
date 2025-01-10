@@ -44,7 +44,7 @@ bigint_t bigint_adjust(bigint_t num);
 
 /* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
-void bigint_exponent_print(bigint_t num);
+void bigint_print_exponent(bigint_t num);
 
 // bigint_printf() works like printf()
 // NOTE: the arguments must be bigint_t
@@ -134,7 +134,7 @@ void bigint_print(bigint_t num)
         printf("\n");
 }
 
-void bigint_exponent_print(bigint_t num)
+void bigint_print_exponent(bigint_t num)
 {
 
         if (num.sign == -1) {
