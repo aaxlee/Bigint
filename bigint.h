@@ -12,7 +12,7 @@ typedef struct bigint_t {
         int length;
 } bigint_t;
 
-// C11-specific macro for bigint_t initialization
+// C11-specific macro to initialize a bigint_t
 #ifdef __STDC_VERSION__
         #if __STDC_VERSION__ >= 201112L
                 #define bigint_t(value) _Generic((value), \
