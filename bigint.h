@@ -161,7 +161,7 @@ void bigint_printf(char *format, ...)
                 if (*f_ptr == '%' && *(f_ptr + 1) == 'E') {
                         f_ptr += 2;
                         bigint_t n = va_arg(args, bigint_t);
-                        bigint_exponent_print(n);
+                        bigint_print_exponent(n);
                         continue;
                 }
                 else if (*f_ptr == '%' && *(f_ptr + 1) == 'N') {
