@@ -1,6 +1,9 @@
 #ifndef BIGINT_H
 #define BIGINT_H
 
+#include <math.h>
+#include <ctype.h> // for isdigit() todo: write my own
+
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -40,7 +43,7 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2);
 /* UTILITY */
 // cleans up zeroes. example => 000123 becomes 123
 bigint_t bigint_adjust(bigint_t num);
-/***********/
+/************************/
 
 /* PRINTING FUNCTIONS */
 void bigint_print(bigint_t num);
@@ -67,13 +70,44 @@ bigint_t bigint_create(char *num)
                 num++;
         }
 
-        int index = 0;
         while (*num != '\0') {
-                n.data[index] = *num - '0';
-                num++;
-                index++;
+
+                if (isdigit(*num)) {
+                        n.data[n.length] = *num - '0';
+                        num++;
+                        n.length++;
+                }
+
+                else if (*num == 'E' || *num == 'e') {
+
+                        int digits = 0;
+                        char *ptr = num;
+                        ptr++;
+                        while (*ptr != '\0') {
+                                digits++;
+                                ptr++;
+                        }
+                        digits--;
+                        
+                        int zeroes = 0;
+                        ptr = num;
+                        ptr++;
+                        while (*ptr != '\0') {
+                                zeroes += (*ptr - '0') * (int)pow(10, digits);
+                                digits /= 10;
+                                ptr++;
+                        }
+
+                        for (int j = 0; j < zeroes; j++) {
+                                n.data[n.length] = 0;
+                                n.length++;
+                        }
+
+                        break;
+
+                }
+
         }
-        n.length = index;
 
         return n;
 }
