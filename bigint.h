@@ -36,7 +36,7 @@ bigint_t bigint_factorial(int num);
 bigint_t bigint_permutations(int n, int r);
 bigint_t bigint_combinations(int n, int r);
 
-// only works with single digit divisor
+
 bigint_t bigint_divide_simple(bigint_t num1, int num2);
 /***********************/
 
