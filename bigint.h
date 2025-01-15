@@ -1,3 +1,4 @@
+
 #ifndef BIGINT_H
 #define BIGINT_H
 
@@ -32,6 +33,7 @@ bigint_t bigint_itbi(int num);
 
 /* OPERATION FUNCTIONS */
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
+bigint_t bigint_pow_simple(bigint_t num1, int num2); // todo: this
 bigint_t bigint_factorial(int num);
 bigint_t bigint_permutations(int n, int r);
 bigint_t bigint_combinations(int n, int r);
@@ -98,12 +100,7 @@ bigint_t bigint_create(char *num)
                                 ptr++;
                         }
 
-                        for (int j = 0; j < zeroes; j++) {
-                                n.data[n.length] = 0;
-                                n.length++;
-                        }
-
-                        break;
+                        return bigint_multiply(n, bigint_pow_simple(bigint_itbi(10), zeroes));
 
                 }
 
@@ -309,6 +306,16 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
 
         if (result.data[0] == 0) {
                 result = bigint_adjust(result);
+        }
+
+        return result;
+}
+
+bigint_t bigint_pow_simple(bigint_t num1, int num2)
+{
+        bigint_t result = num1;
+        for (int i = 1; i < num2; i++) {
+                result = bigint_multiply(result, num1);
         }
 
         return result;
