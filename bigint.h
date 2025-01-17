@@ -90,7 +90,8 @@ bigint_t bigint_create(char *num)
                                 ptr++;
                         }
                         digits--;
-                        
+
+                        // todo: change "zeroes" to "exponent" ffs
                         int zeroes = 0;
                         ptr = num;
                         ptr++;
