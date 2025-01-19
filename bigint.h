@@ -9,7 +9,6 @@
 
 #define _BIG_INT_MAX_LENGTH 500
 
-// todo: optimize member datatypes
 typedef struct bigint_t {
         int data[_BIG_INT_MAX_LENGTH];
         int sign;
@@ -21,14 +20,13 @@ typedef struct bigint_t {
         #if __STDC_VERSION__ >= 201112L
                 #define bigint_t(value) _Generic((value), \
                         char *: bigint_create, \
-                        int: bigint_itbi)(value)
+                        int: bigint_int_to_bigint)(value)
         #endif
 #endif
 
 /* INITIALIZATION FUNCTIONS */
 bigint_t bigint_create(char *num);
-// TODO: uh rename
-bigint_t bigint_itbi(int num);
+bigint_t bigint_int_to_bigint(int num);
 /****************************/
 
 /* OPERATION FUNCTIONS */
@@ -113,8 +111,7 @@ bigint_t bigint_create(char *num)
         return n;
 }
 
-// converts an int to a bigint_t, (itbi = int to bigint)
-bigint_t bigint_itbi(int num)
+bigint_t bigint_int_to_bigint(int num)
 {
         bigint_t result = { {0}, (num > 0) ? 1 : -1, 0 };
         if (num < 0) {
@@ -343,10 +340,10 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2)
 
 bigint_t bigint_factorial(int num)
 {
-        bigint_t result = bigint_itbi(num);
+        bigint_t result = bigint_int_to_bigint(num);
 
         for (int i = num - 1; i >= 2; i--) {
-                bigint_t n = bigint_itbi(i);
+                bigint_t n = bigint_int_to_bigint(i);
                 result = bigint_multiply(result, n);
         }
 
@@ -355,10 +352,10 @@ bigint_t bigint_factorial(int num)
 
 bigint_t bigint_permutations(int n, int r)
 {
-        bigint_t result = bigint_itbi(n);
+        bigint_t result = bigint_int_to_bigint(n);
 
         for (int i = n - 1; i > n - r; i--) {
-                bigint_t coeff = bigint_itbi(i);
+                bigint_t coeff = bigint_int_to_bigint(i);
                 result = bigint_multiply(result, coeff);
         }
 
@@ -371,7 +368,7 @@ bigint_t bigint_combinations(int n, int r)
 
         int i2 = 1;
         for (int i = n; i > n - r; i--) {
-                bigint_t prod = bigint_multiply(result, bigint_itbi(i));
+                bigint_t prod = bigint_multiply(result, bigint_int_to_bigint(i));
                 result = bigint_divide_simple(prod, i2);
                 i2++;
         }
