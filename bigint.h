@@ -9,6 +9,7 @@
 
 #define _BIG_INT_MAX_LENGTH 500
 
+// todo: optimize member datatypes
 typedef struct bigint_t {
         int data[_BIG_INT_MAX_LENGTH];
         int sign;
