@@ -1,4 +1,3 @@
-
 #ifndef BIGINT_H
 #define BIGINT_H
 
@@ -33,7 +32,6 @@ bigint_t bigint_itbi(int num);
 
 /* OPERATION FUNCTIONS */
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
-bigint_t bigint_pow_simple(bigint_t num1, int num2); // todo: this
 bigint_t bigint_factorial(int num);
 bigint_t bigint_permutations(int n, int r);
 bigint_t bigint_combinations(int n, int r);
@@ -90,8 +88,7 @@ bigint_t bigint_create(char *num)
                                 ptr++;
                         }
                         digits--;
-
-                        // todo: change "zeroes" to "exponent" ffs
+                        
                         int zeroes = 0;
                         ptr = num;
                         ptr++;
@@ -101,7 +98,12 @@ bigint_t bigint_create(char *num)
                                 ptr++;
                         }
 
-                        return bigint_multiply(n, bigint_pow_simple(bigint_itbi(10), zeroes));
+                        for (int j = 0; j < zeroes; j++) {
+                                n.data[n.length] = 0;
+                                n.length++;
+                        }
+
+                        break;
 
                 }
 
@@ -187,6 +189,10 @@ void bigint_print_exponent(bigint_t num)
 
 void bigint_print_separate(bigint_t num, char separator)
 {
+        if (num.sign == -1) {
+                printf("-");
+        }
+
         int counter = 1;
         int offset;
         if ( (num.length - 1) % 3 == 0) {
@@ -307,16 +313,6 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
 
         if (result.data[0] == 0) {
                 result = bigint_adjust(result);
-        }
-
-        return result;
-}
-
-bigint_t bigint_pow_simple(bigint_t num1, int num2)
-{
-        bigint_t result = num1;
-        for (int i = 1; i < num2; i++) {
-                result = bigint_multiply(result, num1);
         }
 
         return result;
