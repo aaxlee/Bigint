@@ -11,7 +11,7 @@ bigint_t(11) / bigint_t("11")
 ***************************************
 
 Simple example program
-```
+```C
 #include "bigint.h"
 
 int main()
@@ -30,7 +30,7 @@ int main()
 ```
 
 Solution to problem 20 on projecteuler.net with Bigint
-```
+```C
 #include <stdio.h>
 
 #include "bigint.h"
