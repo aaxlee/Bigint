@@ -14,13 +14,8 @@ int main()
 {
         bigint_t n = bigint_create("3022222102039492");
         bigint_t k = bigint_create("-2221929394095939200");
-
-        /* If you are using c11 or higher you can do:
-         * bigint_t n = bigint_t("3022222102039492");
-         * bigint_t k = bigint_t("-2221929394095939200");
-        */
-
         bigint_t res = bigint_multiply(n, k);
+
         bigint_print(res);
         bigint_printf("\n*****Formatted*****\n%,S\n*******************\n", res);
 
