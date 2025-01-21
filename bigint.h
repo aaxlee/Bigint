@@ -176,9 +176,26 @@ void bigint_print_exponent(bigint_t num)
                 printf("-");
         }
 
-        printf("%d.", num.data[0]);
+        int last_nonzero_index = -1;
+        for (int i = num.length - 1; i >= 0; i--) {
+                if (num.data[i] == 0 && i - 1 >= 0) {
+                        if (num.data[i - 1] != 0) {
+                                last_nonzero_index = i;
+                                break;
+                        }
+                }
+        }
+
+        printf("%d", num.data[0]);
+        if (last_nonzero_index > 1) {
+                printf(",");
+        }
+
         int exponent = num.length - 1;
         for (int i = 1; i < num.length; i++) {
+                if (i == last_nonzero_index) {
+                        break;
+                }
                 printf("%d", num.data[i]);
         }
         printf("E%d", exponent);
