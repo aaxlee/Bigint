@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #define _BIG_INT_MAX_LENGTH 512
 
@@ -86,19 +87,21 @@ bigint_t bigint_create(char *num)
                                 ptr++;
                         }
                         digits--;
-                        
+
                         int zeroes = 0;
                         ptr = num;
                         ptr++;
                         while (*ptr != '\0') {
                                 zeroes += (*ptr - '0') * (int)pow(10, digits);
-                                digits /= 10;
+                                digits--;
                                 ptr++;
                         }
 
                         for (int j = 0; j < zeroes; j++) {
                                 n.data[n.length] = 0;
                                 n.length++;
+
+                                assert(n.length <= _BIG_INT_MAX_LENGTH && "The resulting number is too large.\n");
                         }
 
                         break;
@@ -289,9 +292,7 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
         result.length = num1.length + num2.length;
         result.sign = num1.sign * num2.sign;
 
-        if (result.length > _BIG_INT_MAX_LENGTH) {
-                return result;
-        }
+        assert(result.length <= _BIG_INT_MAX_LENGTH && "The resulting number is too large.\n");
 
         int start = result.length - 1;
         int num1_iterations = 0;
