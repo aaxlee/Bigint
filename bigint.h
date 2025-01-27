@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define _BIG_INT_MAX_LENGTH 500
+#define _BIG_INT_MAX_LENGTH 512
 
 typedef struct bigint_t {
         int data[_BIG_INT_MAX_LENGTH];
@@ -29,15 +29,14 @@ bigint_t bigint_create(char *num);
 bigint_t bigint_int_to_bigint(int num);
 /****************************/
 
-/* OPERATION FUNCTIONS */
+/* Operations */
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
 bigint_t bigint_factorial(int num);
 bigint_t bigint_permutations(int n, int r);
 bigint_t bigint_combinations(int n, int r);
 
-
 bigint_t bigint_divide_simple(bigint_t num1, int num2);
-/***********************/
+/**************/
 
 /* UTILITY */
 // cleans up zeroes. example => 000123 becomes 123
