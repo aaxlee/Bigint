@@ -39,6 +39,11 @@ bigint_t bigint_combinations(int n, int r);
 bigint_t bigint_divide_simple(bigint_t num1, int num2);
 /**************/
 
+/* Comparisons */
+// -1 means a < b, 0 means a == b, 1 means a > b
+int bigint_compare(bigint_t a, bigint_t b);
+/***************/
+
 /* UTILITY */
 // cleans up zeroes. example => 000123 becomes 123
 bigint_t bigint_adjust(bigint_t num);
@@ -391,6 +396,26 @@ bigint_t bigint_combinations(int n, int r)
         }
 
         return result;
+}
+
+int bigint_compare(bigint_t a, bigint_t b)
+{
+        if (a.length > b.length) {
+                return 1;
+        } else if (a.length < b.length) {
+                return -1;
+        }
+
+        for (int i = 0; i < a.length; i++) {
+                if (a.data[i] > b.data[i]) {
+                        return 1;
+                } else if (a.data[i] < b.data[i]) {
+                        return -1;
+                }
+        }
+
+        // they are the same number
+        return 0;
 }
 
 #endif /* BIGINT_H */
