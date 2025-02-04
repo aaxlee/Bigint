@@ -1,6 +1,6 @@
 # Bigint
 
-A simple C header file to handle integers larger than unsigned long long
+A simple C header file that can handle integers larger than unsigned long long
 
 Features
 - No heap allocations
