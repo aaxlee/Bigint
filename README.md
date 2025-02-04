@@ -1,8 +1,6 @@
 # Bigint
 
-C data structure that supports integers larger than unsigned long long
-- Single header file
-- Stack-based
+C data structure that supports integers larger than unsigned long long in a single header file
 
 Features
 - No heap allocations
