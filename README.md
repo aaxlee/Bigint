@@ -1,10 +1,10 @@
 # Bigint
 
-C data structure that supports integers larger than unsigned long long in a single header file
+A simple C header file to handle integers larger than unsigned long long
 
 Features
 - No heap allocations
-- Supports large integers up to 512 integers (Modifyable via _BIG_INT_MAX_LENGTH)
+- Supports large integers up to 512 digits (Modifyable via _BIG_INT_MAX_LENGTH)
 - ***Moderate*** error handling
 - Operations: Multiplication, Permutations, Combinations, Comparisons
 - Utility: Formatted printing (Exponential notation, Digit separation)
