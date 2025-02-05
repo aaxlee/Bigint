@@ -143,6 +143,7 @@ bigint_t bigint_int_to_bigint(int num)
         return result;
 }
 
+// TODO: argument should be pointer
 bigint_t bigint_adjust(bigint_t num)
 {
         int zeroes = 0;
@@ -156,6 +157,7 @@ bigint_t bigint_adjust(bigint_t num)
                 i++;
         }
 
+        // TODO: no need to make a copy
         bigint_t result = { {0}, num.sign, num.length - zeroes };
 
         for (int i = zeroes; i < num.length; i++) {
@@ -216,11 +218,11 @@ void bigint_print_separate(bigint_t num, char separator)
         }
 
         int counter = 1;
-        int offset;
-        if ( (num.length - 1) % 3 == 0) {
+        int offset = 0;
+        if ((num.length - 1) % 3 == 0) {
                 offset = 0;
         }
-        if ( (num.length - 1) % 3 > 0) {
+        if ((num.length - 1) % 3 > 0) {
                 offset = (num.length - 1) % 3;
         }
         if (num.length - 1 < 3) {
