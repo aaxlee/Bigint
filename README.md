@@ -4,7 +4,7 @@ C library that can handle integers larger than unsigned long long
 
 Features
 - No heap allocations
-- Supports large integers up to 512 digits (Modifyable via _BIG_INT_MAX_LENGTH)
+- Supports large integers up to 1024 digits (Modifyable via _BIG_INT_MAX_LENGTH)
 - ***Moderate*** error handling
 - Operations: Multiplication, Permutations, Combinations, Comparisons
 - Utility: Formatted printing (Exponential notation, Digit separation)
