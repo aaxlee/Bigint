@@ -8,12 +8,12 @@
 #include <stdarg.h>
 #include <assert.h>
 
-#define _BIG_INT_MAX_LENGTH 512
+#define _BIG_INT_MAX_LENGTH 1024
 
 typedef struct bigint_t {
-        int data[_BIG_INT_MAX_LENGTH];
-        int sign;
-        int length;
+        unsigned char data[_BIG_INT_MAX_LENGTH];
+        char sign;
+        size_t length;
 } bigint_t;
 
 // C11-specific macro for bigint_t initialization
@@ -46,7 +46,7 @@ int bigint_compare(bigint_t a, bigint_t b);
 
 /* UTILITY */
 // cleans up zeroes. example => 000123 becomes 123
-bigint_t bigint_adjust(bigint_t num);
+void bigint_adjust(bigint_t *num);
 /************************/
 
 /* PRINTING FUNCTIONS */
@@ -143,13 +143,12 @@ bigint_t bigint_int_to_bigint(int num)
         return result;
 }
 
-// TODO: argument should be pointer
-bigint_t bigint_adjust(bigint_t num)
+void bigint_adjust(bigint_t *num)
 {
-        int zeroes = 0;
-        int i = 0;
-        while (i < num.length) {
-                if (num.data[i] == 0) {
+        size_t zeroes = 0;
+        size_t i = 0;
+        while (i < num->length) {
+                if (num->data[i] == 0) {
                         zeroes++;
                 } else {
                         break;
@@ -157,14 +156,11 @@ bigint_t bigint_adjust(bigint_t num)
                 i++;
         }
 
-        // TODO: no need to make a copy
-        bigint_t result = { {0}, num.sign, num.length - zeroes };
-
-        for (int i = zeroes; i < num.length; i++) {
-                result.data[i - zeroes] = num.data[i];
+        for (size_t i = zeroes; i < num->length; i++) {
+                num->data[i - zeroes] = num->data[i];
         }
 
-        return result;
+        num->length -= zeroes;
 }
 
 void bigint_print(bigint_t num)
@@ -172,7 +168,7 @@ void bigint_print(bigint_t num)
         if (num.sign == -1) {
                 printf("-");
         }
-        for (int i = 0; i < num.length; i++) {
+        for (size_t i = 0; i < num.length; i++) {
                 printf("%d", num.data[i]);
         }
         printf("\n");
@@ -185,7 +181,7 @@ void bigint_print_exponent(bigint_t num)
                 printf("-");
         }
 
-        int last_nonzero_index = -1;
+        size_t last_nonzero_index = -1;
         for (int i = num.length - 1; i >= 0; i--) {
                 if (num.data[i] == 0 && i - 1 >= 0) {
                         if (num.data[i - 1] != 0) {
@@ -201,7 +197,7 @@ void bigint_print_exponent(bigint_t num)
         }
 
         int exponent = num.length - 1;
-        for (int i = 1; i < num.length; i++) {
+        for (size_t i = 1; i < num.length; i++) {
                 if (i == last_nonzero_index) {
                         break;
                 }
@@ -217,8 +213,8 @@ void bigint_print_separate(bigint_t num, char separator)
                 printf("-");
         }
 
-        int counter = 1;
-        int offset = 0;
+        size_t counter = 1;
+        size_t offset = 0;
         if ((num.length - 1) % 3 == 0) {
                 offset = 0;
         }
@@ -229,7 +225,7 @@ void bigint_print_separate(bigint_t num, char separator)
                 offset = num.length;
                 counter = 4;
         }
-        for (int i = 0; i < num.length; i++) {
+        for (size_t i = 0; i < num.length; i++) {
                 printf("%d", num.data[i]);
                 if (i == offset) {
                         printf("%c", separator);
@@ -262,9 +258,10 @@ void bigint_printf(char *format, ...)
                         bigint_t n = va_arg(args, bigint_t);
                         bigint_print(n);
                         continue;
-                } else if (*f_ptr == '%' && *(f_ptr + 1) == 'S' ||
-                                *f_ptr == '%' && *(f_ptr + 1) != ' '
-                                && *(f_ptr + 2) == 'S') {
+                } else if ((*f_ptr == '%' && *(f_ptr + 1) == 'S') ||
+                           (*f_ptr == '%' && *(f_ptr + 1) != ' ' &&
+                            *(f_ptr + 2) == 'S')) {
+
                         bigint_t n = va_arg(args, bigint_t);
                         char separator;
 
@@ -334,7 +331,7 @@ bigint_t bigint_multiply(bigint_t num1, bigint_t num2)
         }
 
         if (result.data[0] == 0) {
-                result = bigint_adjust(result);
+                bigint_adjust(&result);
         }
 
         return result;
@@ -347,7 +344,7 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2)
         result.sign = num1.sign * ( (num2 > 0) ? 1 : -1 );
 
         int remainder = 0;
-        for (int i = 0; i < num1.length; i++) {
+        for (size_t i = 0; i < num1.length; i++) {
                 int n1 = num1.data[i];
                 int sum = remainder * 10 + n1;
                 int m = sum / num2;
@@ -356,7 +353,7 @@ bigint_t bigint_divide_simple(bigint_t num1, int num2)
         }
 
         if (result.data[0] == 0) {
-                result = bigint_adjust(result);
+                bigint_adjust(&result);
         }
 
         return result;
@@ -408,7 +405,7 @@ int bigint_compare(bigint_t a, bigint_t b)
                 return -1;
         }
 
-        for (int i = 0; i < a.length; i++) {
+        for (size_t i = 0; i < a.length; i++) {
                 if (a.data[i] > b.data[i]) {
                         return 1;
                 } else if (a.data[i] < b.data[i]) {
