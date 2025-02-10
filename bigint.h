@@ -172,7 +172,6 @@ void bigint_print(bigint_t num)
         for (size_t i = 0; i < num.length; i++) {
                 printf("%d", num.data[i]);
         }
-        printf("\n");
 }
 
 void bigint_print_exponent(bigint_t num)
@@ -295,20 +294,22 @@ bigint_t bigint_add(bigint_t num1, bigint_t num2)
         bigint_t res = {
                 .data = {0},
                 res.sign = num1.sign * num2.sign,
-                res.length = ((num1.length > num2.length) ? num1.length : num2.length) + 1
+                res.length = ((num1.length >= num2.length) ? num1.length : num2.length) + 1
         };
 
         int dl = num1.length - num2.length;
+        printf("dl: %d\n", dl);
         int carry = 0;
         int j = 0;
         for (int i = num1.length - 1; i >= 0; i--) {
                 int n1 = num1.data[i];
                 int n2;
-                if (num2.data[i - dl >= 0]) {
+                if (num2.data[i - dl] >= 0) {
                         n2 = num2.data[i - dl];
                 } else {
                         n2 = 0;
                 }
+                printf("n1: %d, n2: %d\n", n1, n2);
 
                 int sum = n1 + n2 + carry;
 
