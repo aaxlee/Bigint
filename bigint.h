@@ -298,7 +298,6 @@ bigint_t bigint_add(bigint_t num1, bigint_t num2)
         };
 
         int dl = num1.length - num2.length;
-        printf("dl: %d\n", dl);
         int carry = 0;
         int j = 0;
         for (int i = num1.length - 1; i >= 0; i--) {
