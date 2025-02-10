@@ -31,6 +31,7 @@ bigint_t bigint_int_to_bigint(int num);
 /****************************/
 
 /* Operations */
+bigint_t bigint_add(bigint_t num1, bigint_t num2);
 bigint_t bigint_multiply(bigint_t num1, bigint_t num2);
 bigint_t bigint_factorial(int num);
 bigint_t bigint_permutations(int n, int r);
@@ -287,6 +288,45 @@ void bigint_printf(char *format, ...)
         }
 
         va_end(args);
+}
+
+bigint_t bigint_add(bigint_t num1, bigint_t num2)
+{
+        bigint_t res = {
+                .data = {0},
+                res.sign = num1.sign * num2.sign,
+                res.length = ((num1.length > num2.length) ? num1.length : num2.length) + 1
+        };
+
+        int dl = num1.length - num2.length;
+        int carry = 0;
+        int j = 0;
+        for (int i = num1.length - 1; i >= 0; i--) {
+                int n1 = num1.data[i];
+                int n2;
+                if (num2.data[i - dl >= 0]) {
+                        n2 = num2.data[i - dl];
+                } else {
+                        n2 = 0;
+                }
+
+                int sum = n1 + n2 + carry;
+
+                res.data[res.length - 1 - j] = sum % 10;
+
+                carry = sum / 10;
+                j++;
+        }
+
+        if (carry > 0) {
+                res.data[res.length - 1 - j] += carry;
+        }
+
+        if (res.data[0] == 0) {
+                bigint_adjust(&res);
+        }
+
+        return res;
 }
 
 // multiply two bigint_t numbers using long multiplication
